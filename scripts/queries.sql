@@ -12,19 +12,11 @@ insert into korisnik values
 ('Nikola', 'Nikolic', 'nikola@gmail.com', '0645434545', 'Novi Sad', STR_TO_DATE('1995-09-23', '%Y-%m-%d'), STR_TO_DATE('2017-02-08', '%Y-%m-%d')),
 ('Marko', 'Markovic', 'marko@gmail.com', '0645434545', 'Kragujevac', STR_TO_DATE('1995-11-13', '%Y-%m-%d'), STR_TO_DATE('2018-01-09', '%Y-%m-%d'));
 
--- INSERT into pozicijaUFirmi
-insert into pozicijaUFirmi values
-(null, 'Ekonomista'),
-(null, 'Upravlja projektima'),
-(null, 'Programer'),
-(null, 'HR');
--- INSERT into korisnikPozicija
-
 -- insert admins
 insert into admin values ('nina@gmail.com');
 
 -- korisnik zahteva odmor
-insert into zahtevaOdmor values
+insert into odmor values
 (STR_TO_DATE('2018-12-30', '%Y-%m-%d'), 'Zelim da slavim novu godinu', 'dusan@gmail.com', 0),
 (STR_TO_DATE('2018-12-20', '%Y-%m-%d'), 'Zelim da slavim novu godinu', 'dusan@gmail.com', 0),
 (STR_TO_DATE('2018-12-10', '%Y-%m-%d'), 'Zelim da slavim novu godinu', 'nina@gmail.com', 0),
@@ -32,7 +24,7 @@ insert into zahtevaOdmor values
 (STR_TO_DATE('2018-12-23', '%Y-%m-%d'), 'Zelim da slavim novu godinu', 'nikola@gmail.com', 0);
 
 -- Testiranje da li je dan u bloku odmora tog coveka
-insert into zahtevaOdmor values
+insert into odmor values
 (STR_TO_DATE('2018-12-28', '%Y-%m-%d'), 'Zelim da slavim novu godinu', 'dusan@gmail.com', 0);
 
 
