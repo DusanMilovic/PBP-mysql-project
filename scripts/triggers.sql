@@ -123,7 +123,7 @@ begin
     
     -- NE SME DA ODGOVORI NA DATUM KOJI JE ALTERNATIVNI osim ako nije primarni odbijen !!!!!!!!!!! JOJ DUSANE
     set da_li_je_alternativni = (select count(*) from primarniSekundarniOdmor pso
-												where pso.odmor_dan_odmora1 = new.odmor_dan_odmora
+												where pso.odmor_korisnik_email = new.odmor_korisnik_email and pso.odmor_dan_odmora1 = new.odmor_dan_odmora
                                                 );
                                                 
 	if (da_li_je_alternativni > 0)
