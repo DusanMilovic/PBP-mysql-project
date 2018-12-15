@@ -86,8 +86,8 @@ CREATE TABLE IF NOT EXISTS primarniSekundarniOdmor (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT fk_primarniSekundarniOdmor_odmor2
-    FOREIGN KEY (odmor_dan_odmora1)
-    REFERENCES odmor (dan_odmora)
+    FOREIGN KEY (odmor_korisnik_email, odmor_dan_odmora1)
+    REFERENCES odmor (korisnik_email, dan_odmora)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 );

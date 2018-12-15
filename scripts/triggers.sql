@@ -23,7 +23,7 @@ begin
 	set new.ukupno = new.default_dana_godisnje + new.preneo_iz_prethodne;
 end@
 
-drop trigger if exists ai_defaultDaniPoGodini@
+drop trigger if exists ai_defaultDaniPoGodini@ 
 create trigger ai_defaultDaniPoGodini after insert on defaultDaniPoGodini
 for each row
 begin
@@ -76,9 +76,11 @@ begin
 																		onzo.odmor_dan_odmora = DATE_ADD(new.dan_odmora, interval 1 day)
 																		);
                                                                         
-	if (ima_zahtev_pre_novog_dana > 0 or ima_odgovoren_pre_novog_dana > 0 or ima_zahtev_posle_novog_dana > 0 or ima_odgovoren_posle_novog_dana > 0)
-		then signal sqlstate '45000' set message_text = 'U BLOKU ODMORA HOCE ODMOR';
-    end if;
+-- 	if (ima_zahtev_pre_novog_dana > 0 or ima_odgovoren_pre_novog_dana > 0 or ima_zahtev_posle_novog_dana > 0 or ima_odgovoren_posle_novog_dana > 0)
+-- 		-- Ako nije u bloku, pitaj ga da li zeli da upise novi datum kao alternativni dan odmora
+-- 		-- ako zeli, upisi taj novi odmor 
+-- 		then signal sqlstate '45000' set message_text = 'U BLOKU ODMORA HOCE ODMOR';
+--     end if;
     
 
     set novi_broj_slobodnih_dana = (select preostalo_slobodnih_dana from aktivnaStatistikaUsera asu where asu.korisnik_email = new.korisnik_email) - 1;
@@ -103,6 +105,9 @@ begin
 	declare novi_broj_dana_na_cekanju int;
     declare novi_broj_preostalo_slobodnih_dana int;
     
+    declare da_li_je_alternativni int;
+    declare status_primarnog_dana varchar(45);
+    
     -- mora da bude ADMIN
 	if (new.admin_korisnik_email not in (select korisnik_email from admin))
 		then signal sqlstate '45000' set message_text='Moze samo admin da odobri ili odbije request za odmor.';
@@ -116,7 +121,25 @@ begin
 		then signal sqlstate '45000' set message_text='Ne moze da odgovori na obrisani zahtev za odmor';
     end if;
     
-    -- ako hoce da ga odobri, proveri zauzetost tog meseca
+    -- NE SME DA ODGOVORI NA DATUM KOJI JE ALTERNATIVNI osim ako nije primarni odbijen !!!!!!!!!!! JOJ DUSANE
+    set da_li_je_alternativni = (select count(*) from primarniSekundarniOdmor pso
+												where pso.odmor_dan_odmora1 = new.odmor_dan_odmora
+                                                );
+                                                
+	if (da_li_je_alternativni > 0)
+    then begin
+        set status_primarnog_dana = (select onzo.status from odgovorNaZahtevOdmora onzo
+														where onzo.odmor_dan_odmora = (select pso.odmor_dan_odmora from primarniSekundarniOdmor pso
+																												where pso.odmor_dan_odmora1 = new.odmor_dan_odmora
+																												)
+														);
+		if (status_primarnog_dana is null or status_primarnog_dana = 'odobren' or status_primarnog_dana = 'na cekanju')
+			then signal sqlstate '45000' set message_text='Ne sme da odgovori na alternativni dan ukoliko primarni nije odbijen!';
+        end if;
+    end;
+    end if;
+    
+    -- ako hoce da ga odobri, proveri zauzetost tog dana
     if (new.status like 'odobren')
 	then begin
     set odmori_u_istom_danu = (select count(*) from odgovorNaZahtevOdmora
@@ -124,9 +147,12 @@ begin
                                                   odmor_dan_odmora = new.odmor_dan_odmora
 												);
 	set ukupno_ljudi = (select count(*) from korisnik);
-	set procenat_ljudi_na_odmoru = odmori_u_istom_danu *100 / ukupno_ljudi;
+	set procenat_ljudi_na_odmoru = (odmori_u_istom_danu + 1)*100 / ukupno_ljudi;
 	if (procenat_ljudi_na_odmoru > 50)
-		then signal sqlstate '45000' set message_text='Previse ljudi istog dana na odmoru!';
+		then begin
+			set new.status = 'odbijen';
+			set new.poruka_admina = 'Previse ljudi je tog dana vec na odmoru';
+		end;
 	end if;
     end;
     end if;
