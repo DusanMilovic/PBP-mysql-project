@@ -4,8 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <mysql/mysql.h>
+#include <stdbool.h>
 
-#define QUERY_LENGHT 1024
+#define QUERY_LENGHT 2048
 
 typedef struct {
 	MYSQL *connection;
