@@ -75,13 +75,6 @@ begin
 																		(onzo.status = 'odobren' or onzo.status = 'na cekanju') and 
 																		onzo.odmor_dan_odmora = DATE_ADD(new.dan_odmora, interval 1 day)
 																		);
-                                                                        
--- 	if (ima_zahtev_pre_novog_dana > 0 or ima_odgovoren_pre_novog_dana > 0 or ima_zahtev_posle_novog_dana > 0 or ima_odgovoren_posle_novog_dana > 0)
--- 		-- Ako nije u bloku, pitaj ga da li zeli da upise novi datum kao alternativni dan odmora
--- 		-- ako zeli, upisi taj novi odmor 
--- 		then signal sqlstate '45000' set message_text = 'U BLOKU ODMORA HOCE ODMOR';
---     end if;
-    
 
     set novi_broj_slobodnih_dana = (select preostalo_slobodnih_dana from aktivnaStatistikaUsera asu where asu.korisnik_email = new.korisnik_email) - 1;
     set novi_broj_dana_na_cekanju = (select dani_na_cekanju from aktivnaStatistikaUsera asu where asu.korisnik_email = new.korisnik_email) + 1;

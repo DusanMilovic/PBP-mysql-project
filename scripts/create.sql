@@ -8,8 +8,8 @@ CREATE TABLE IF NOT EXISTS korisnik (
   email VARCHAR(45) PRIMARY KEY NOT NULL,
   broj_telefona VARCHAR(45) NULL,
   adresa VARCHAR(45) NULL,
-  datum_rodjenja DATE NULL,
-  datum_zaposljavanja DATE NULL
+  datum_rodjenja VARCHAR(45) NULL,
+  datum_zaposljavanja VARCHAR(45) NULL
 );
 
 CREATE TABLE IF NOT EXISTS aktivnaStatistikaUsera (

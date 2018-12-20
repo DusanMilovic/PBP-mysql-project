@@ -15,31 +15,32 @@ insert into korisnik values
 -- insert admins
 insert into admin values ('nina@gmail.com');
 
+-- ====================================================================================
 -- korisnik zahteva odmor
-insert into odmor values
-(STR_TO_DATE('2018-12-23', '%Y-%m-%d'), 'Zelim da slavim novu godinu', 'dusan@gmail.com', 0),
-(STR_TO_DATE('2018-12-30', '%Y-%m-%d'), 'Zelim da slavim novu godinu', 'dusan@gmail.com', 0),
-(STR_TO_DATE('2018-12-10', '%Y-%m-%d'), 'Zelim da slavim novu godinu', 'nina@gmail.com', 0),
-(STR_TO_DATE('2018-12-23', '%Y-%m-%d'), 'Zelim da slavim novu godinu', 'marko@gmail.com', 0),
-(STR_TO_DATE('2018-12-23', '%Y-%m-%d'), 'Zelim da slavim novu godinu', 'nikola@gmail.com', 0);
+-- insert into odmor values
+-- (STR_TO_DATE('2018-12-20', '%Y-%m-%d'), 'Zelim da slavim novu godinu', 'dusan@gmail.com', 0),
+-- (STR_TO_DATE('2018-12-30', '%Y-%m-%d'), 'Zelim da slavim novu godinu', 'dusan@gmail.com', 0),
+-- (STR_TO_DATE('2018-12-10', '%Y-%m-%d'), 'Zelim da slavim novu godinu', 'nina@gmail.com', 0),
+-- (STR_TO_DATE('2018-12-23', '%Y-%m-%d'), 'Zelim da slavim novu godinu', 'marko@gmail.com', 0),
+-- (STR_TO_DATE('2018-12-23', '%Y-%m-%d'), 'Zelim da slavim novu godinu', 'nikola@gmail.com', 0);
 
 -- Testiranje da li je dan u bloku odmora tog coveka
-insert into odmor values
-(STR_TO_DATE('2018-12-28', '%Y-%m-%d'), 'Zelim da slavim novu godinu', 'dusan@gmail.com', 0);
+-- insert into odmor values
+-- (STR_TO_DATE('2018-12-28', '%Y-%m-%d'), 'Zelim da slavim novu godinu', 'dusan@gmail.com', 0);
 
 -- Test primer da unesemo alternativni dan za neki dan odmora
-insert into odmor values
-(STR_TO_DATE('2018-12-24', '%Y-%m-%d'), 'Zelim da slavim novu godinu alternativni', 'dusan@gmail.com', 0);
-insert into primarniSekundarniOdmor values
-('dusan@gmail.com', STR_TO_DATE('2018-12-23', '%Y-%m-%d'), STR_TO_DATE('2018-12-24', '%Y-%m-%d'));
+-- insert into odmor values
+-- (STR_TO_DATE('2018-12-24', '%Y-%m-%d'), 'Zelim da slavim novu godinu alternativni', 'dusan@gmail.com', 0);
+-- insert into primarniSekundarniOdmor values
+-- ('dusan@gmail.com', STR_TO_DATE('2018-12-23', '%Y-%m-%d'), STR_TO_DATE('2018-12-24', '%Y-%m-%d'));
 
 -- admin odgovara na zahtev odmora
 -- primer gde !admin pokusa da odgovori na zahtev odmora
-insert into odgovorNaZahtevOdmora values('odobren', 'Samo napred!', 'dusan@gmail.com', STR_TO_DATE('2018-12-30', '%Y-%m-%d'), 'filip@gmail.com');
+-- insert into odgovorNaZahtevOdmora values('odobren', 'Samo napred!', 'dusan@gmail.com', STR_TO_DATE('2018-12-30', '%Y-%m-%d'), 'filip@gmail.com');
 
-insert into odgovorNaZahtevOdmora values
-('odobren', 'Samo napred!', 'dusan@gmail.com', STR_TO_DATE('2018-12-24', '%Y-%m-%d'), 'nina@gmail.com'),
-('odobren', 'Samo napred!', 'dusan@gmail.com', STR_TO_DATE('2018-12-23', '%Y-%m-%d'), 'nina@gmail.com'),
-('odobren', 'Samo napred!', 'nina@gmail.com', STR_TO_DATE('2018-12-10', '%Y-%m-%d'), 'nina@gmail.com'),
-('odobren', 'Samo napred!', 'marko@gmail.com', STR_TO_DATE('2018-12-23', '%Y-%m-%d'), 'nina@gmail.com'),
-('odobren', 'Samo napred!', 'nikola@gmail.com', STR_TO_DATE('2018-12-23', '%Y-%m-%d'), 'nina@gmail.com');
+-- insert into odgovorNaZahtevOdmora values
+-- ('odobren', 'Samo napred!', 'dusan@gmail.com', STR_TO_DATE('2018-12-20', '%Y-%m-%d'), 'nina@gmail.com'),
+-- ('odobren', 'Samo napred!', 'dusan@gmail.com', STR_TO_DATE('2018-12-23', '%Y-%m-%d'), 'nina@gmail.com'),
+-- ('odobren', 'Samo napred!', 'nina@gmail.com', STR_TO_DATE('2018-12-10', '%Y-%m-%d'), 'nina@gmail.com'),
+-- ('odobren', 'Samo napred!', 'marko@gmail.com', STR_TO_DATE('2018-12-23', '%Y-%m-%d'), 'nina@gmail.com'),
+-- ('odobren', 'Samo napred!', 'nikola@gmail.com', STR_TO_DATE('2018-12-23', '%Y-%m-%d'), 'nina@gmail.com');
