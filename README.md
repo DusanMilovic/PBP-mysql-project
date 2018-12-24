@@ -16,7 +16,7 @@ Kada je status odbijen ili prihvacen, brise se taj zahtev odmora. (Necemo zaista
 
 U firmi nikada ne sme da se desi da vise od 50% zaposlenih je u istom danu na odmoru.
 
-Ukoliko se dani nekog korisnika ne nalaze u bloku (tacnije ako imamo vise od jednog dana zaredom), onda za taj dan korisnik moze da navede alternativni dan odmora koji ce biti razmatran u slucaju da primarni dan bude odbijen od strane admina.
+Ukoliko se dani nekog korisnika ne nalaze u bloku (tacnije ako imamo vise od jednog dana zaredom), onda za taj dan korisnik moze da navede alternativni dan odmora koji ce biti razmatran u slucaju da primarni dan bude odbijen od strane admina. Jedan korisnik ne moze da ima isti alternativni odmor za razlicite odmore.
 
 ## Uslovi projekta:
 * Rekurzivni odnos
