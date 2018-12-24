@@ -17,3 +17,5 @@ void ispisiSveZahteveZaOdmor(Sql *sql, char *adminEmail, char *korisnikEmail);
 void odgovoriNaOdmor(Sql *sql, char *adminEmail, char *korisnikEmail, char *datumOdmora);
 void ispisiLiveStatistic(Sql *sql, char *korisnikEmail);
 void ispisiPracenjeDana(Sql *sql, char *korisnikEmail);
+void dodajDane(Sql *sql);
+void azurirajLiveStatistic(Sql *sql, char *emailKorisnika, int brojDana);

@@ -168,7 +168,7 @@ void dodajPrimarniSekundarniOdmor(Sql *sql, char *emailKorisnika, char *primarni
 }
 
 void glavniMeni(Sql *sql) {
-	printf("\n%s\n%s\n%s\n%s\n%s\n", "Unesite:", "1) Unos novih korisnika", "2) Unos novog admina", "3) Zahtev za odmor", "4) Odgovor na zahtev odmora");
+	printf("\n%s\n%s\n%s\n%s\n%s\n%s\n", "Unesite:", "1) Unos novih korisnika", "2) Unos novog admina", "3) Zahtev za odmor", "4) Odgovor na zahtev odmora", "5) Dodaj/oduzmi nekome dan");
 	int opcija;
 	scanf("%d", &opcija);
 	switch(opcija) {
@@ -183,6 +183,9 @@ void glavniMeni(Sql *sql) {
 			break;
 		case 4:
 			dodajOdgovorNaZahtevOdmora(sql);
+			break;
+		case 5:
+			dodajDane(sql);
 			break;
 		default:
 			printf("Dovidjenja!\n");
@@ -354,7 +357,7 @@ void odgovoriNaOdmor(Sql *sql, char *adminEmail, char *korisnikEmail, char *datu
 	sprintf(sql->query, "insert into odgovorNaZahtevOdmora values('%s', '%s', '%s', '%s', '%s')", status, adminPoruka, korisnikEmail, datumOdmora, adminEmail);
 
 	if (mysql_query(sql->connection, sql->query)) {
-    	printf ("Neuspesno izvrsavanje upita dodaj korisnika\n");
+    	printf ("Neuspesno izvrsavanje upita odgovoriNaOdmor!\n");
     	exit (EXIT_FAILURE);
   	}
 
@@ -445,6 +448,66 @@ void ispisiPracenjeDana(Sql *sql, char *korisnikEmail) {
   	printf ("\n\n");
 }
 
+void dodajDane(Sql *sql) {
+	ispisiSveKorisnike(sql);
+	printf("Kojem korisniku (email) od ponudjenih zelite da dodate dane: ");
+	char emailKorisnika[50];
+	scanf("%s", emailKorisnika);
 
+	printf("Koliko dana zelite da dodate: ");
+	int brojDana;
+	scanf("%d", &brojDana);
+
+	printf("Za koju godinu je promena: ");
+	int godina;
+	scanf("%d", &godina);
+
+	printf("Razlog promene dana: ");
+	char temp;
+	scanf("%c", &temp);
+	char razlogPromene[100];
+	fgets(razlogPromene, 100, stdin);
+
+	sprintf(sql->query, "insert into pracenjeDana values(%d, '%s', %d, null, '%s');", godina, razlogPromene, brojDana, emailKorisnika);
+
+	if (mysql_query(sql->connection, sql->query)) {
+    	printf ("Neuspesno izvrsavanje upita dodaj admina\n");
+    	exit (EXIT_FAILURE);
+  	}
+
+  	printf("PRE DODAVANJA DANA: \n\n");
+  	ispisiLiveStatistic(sql, emailKorisnika);
+
+  	azurirajLiveStatistic(sql, emailKorisnika, brojDana);
+
+  	printf("POSLE DODAVANJA DANA: \n\n");
+  	ispisiLiveStatistic(sql, emailKorisnika);
+
+}
+
+
+void azurirajLiveStatistic(Sql *sql, char *emailKorisnika, int brojDana) {
+	int slobodnihDana;
+	sprintf(sql->query, "select preostalo_slobodnih_dana from aktivnaStatistikaUsera asu where asu.korisnik_email = '%s'", emailKorisnika);
+
+	if (mysql_query(sql->connection, sql->query)) {
+    	printf ("Neuspesno izvrsavanje upita dodaj admina\n");
+    	exit (EXIT_FAILURE);
+  	}
+
+  	sql->result = mysql_use_result(sql->connection);
+
+  	while((sql->row = mysql_fetch_row(sql->result))) {
+		slobodnihDana = atoi(sql->row[0]);
+  	}
+
+  	int noviSlobodniDani = slobodnihDana + brojDana;
+
+	sprintf(sql->query, "update aktivnaStatistikaUsera set preostalo_slobodnih_dana = %d where korisnik_email = '%s'", noviSlobodniDani, emailKorisnika);
+	if (mysql_query(sql->connection, sql->query)) {
+    	printf ("Neuspesno izvrsavanje upita dodaj admina\n");
+    	exit (EXIT_FAILURE);
+  	}
+}
 
 
