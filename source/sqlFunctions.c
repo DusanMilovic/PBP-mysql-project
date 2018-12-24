@@ -33,6 +33,7 @@ void dodajKorisnika(Sql *sql) {
   		}
 	}
 
+	ispisiSveKorisnike(sql);
 	glavniMeni(sql);
 }
 
@@ -47,7 +48,7 @@ void dodajAdmina(Sql *sql) {
     	printf ("Neuspesno izvrsavanje upita dodaj admina\n");
     	exit (EXIT_FAILURE);
   	}
-
+  	ispisiSveAdmine(sql);
   	glavniMeni(sql);
 }
 
@@ -458,17 +459,13 @@ void dodajDane(Sql *sql) {
 	int brojDana;
 	scanf("%d", &brojDana);
 
-	printf("Za koju godinu je promena: ");
-	int godina;
-	scanf("%d", &godina);
-
 	printf("Razlog promene dana: ");
 	char temp;
 	scanf("%c", &temp);
 	char razlogPromene[100];
 	fgets(razlogPromene, 100, stdin);
 
-	sprintf(sql->query, "insert into pracenjeDana values(%d, '%s', %d, null, '%s');", godina, razlogPromene, brojDana, emailKorisnika);
+	sprintf(sql->query, "insert into pracenjeDana values(2018, '%s', %d, null, '%s');", razlogPromene, brojDana, emailKorisnika);
 
 	if (mysql_query(sql->connection, sql->query)) {
     	printf ("Neuspesno izvrsavanje upita dodaj admina\n");
@@ -483,6 +480,7 @@ void dodajDane(Sql *sql) {
   	printf("POSLE DODAVANJA DANA: \n\n");
   	ispisiLiveStatistic(sql, emailKorisnika);
 
+  	glavniMeni(sql);
 }
 
 
