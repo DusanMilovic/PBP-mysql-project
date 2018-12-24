@@ -20,16 +20,15 @@ drop trigger if exists bi_defaultDaniPoGodini@
 create trigger bi_defaultDaniPoGodini before insert on defaultDaniPoGodini
 for each row
 begin
-	-- plus sve iz loga !!!!
 	set new.ukupno = new.default_dana_godisnje + new.preneo_iz_prethodne;
 end@
 
--- drop trigger if exists ai_defaultDaniPoGodini@ 
--- create trigger ai_defaultDaniPoGodini after insert on defaultDaniPoGodini
--- for each row
--- begin
---     insert into pracenjeDana values (new.godina, 'Zaposlio se', new.default_dana_godisnje, null, new.korisnik_email);
--- end@
+drop trigger if exists ai_defaultDaniPoGodini@ 
+create trigger ai_defaultDaniPoGodini after insert on defaultDaniPoGodini
+for each row
+begin
+    insert into pracenjeDana values (new.godina, 'Zaposlio se', new.default_dana_godisnje, null, new.korisnik_email);
+end@
 
 -- =======================
 -- 			ZAHTEVA ODMOR
@@ -163,12 +162,12 @@ begin
     
 	if (new.status like 'odobren')
 	then begin
-		-- set razlog_promene_dana = concat('Odobren zahtev za odmor na dan: ', new.odmor_dan_odmora);
+		set razlog_promene_dana = concat('Odobren zahtev za odmor na dan: ', new.odmor_dan_odmora);
 		set novi_broj_potvrdjeni_dani = (select potvrdjeni_dani from aktivnaStatistikaUsera asu where asu.korisnik_email = new.odmor_korisnik_email) + 1;
 		set novi_broj_dana_na_cekanju = (select dani_na_cekanju from aktivnaStatistikaUsera asu where asu.korisnik_email = new.odmor_korisnik_email) - 1;
     
 		update aktivnaStatistikaUsera set potvrdjeni_dani = novi_broj_potvrdjeni_dani, dani_na_cekanju = novi_broj_dana_na_cekanju where korisnik_email = new.odmor_korisnik_email;
-        -- insert into pracenjeDana values (YEAR(new.odmor_dan_odmora), razlog_promene_dana, 1, null,  new.odmor_korisnik_email);
+        insert into pracenjeDana values (YEAR(new.odmor_dan_odmora), razlog_promene_dana, 1, null,  new.odmor_korisnik_email);
 	end;
 	end if;
    
