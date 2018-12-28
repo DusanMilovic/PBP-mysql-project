@@ -78,6 +78,7 @@ CREATE TABLE IF NOT EXISTS primarniSekundarniOdmor (
   odmor_korisnik_email VARCHAR(45) NOT NULL,
   odmor_dan_odmora DATE NOT NULL,
   odmor_dan_odmora1 DATE NULL,
+  unique(odmor_korisnik_email, odmor_dan_odmora1),
   PRIMARY KEY (odmor_korisnik_email, odmor_dan_odmora),
   INDEX fk_primarniSekundarniOdmor_odmor2_idx (odmor_dan_odmora1 ASC),
   CONSTRAINT fk_primarniSekundarniOdmor_odmor1

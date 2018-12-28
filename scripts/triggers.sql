@@ -41,40 +41,40 @@ begin
 	declare novi_broj_slobodnih_dana int;
     declare novi_broj_dana_na_cekanju int;
     
-    declare ima_zahtev_pre_novog_dana int;
-    declare ima_zahtev_posle_novog_dana int;
+    -- declare ima_zahtev_pre_novog_dana int;
+    -- declare ima_zahtev_posle_novog_dana int;
     
-    declare ima_odgovoren_pre_novog_dana int;
-    declare ima_odgovoren_posle_novog_dana int;
+    -- declare ima_odgovoren_pre_novog_dana int;
+    -- declare ima_odgovoren_posle_novog_dana int;
     
-    set ima_zahtev_pre_novog_dana = (
-														  select count(*) from odmor zo
-                                                          where zo.korisnik_email = new.korisnik_email and
-                                                          zo.deleted = 0 and
-                                                          zo.dan_odmora = DATE_ADD(new.dan_odmora, interval -1 day)
-														);
+    -- set ima_zahtev_pre_novog_dana = (
+	-- 													  select count(*) from odmor zo
+--                                                           where zo.korisnik_email = new.korisnik_email and
+--                                                           zo.deleted = 0 and
+--                                                           zo.dan_odmora = DATE_ADD(new.dan_odmora, interval -1 day)
+-- 														);
                                                         
-	set ima_odgovoren_pre_novog_dana = (
-																	select count(*) from odgovorNaZahtevOdmora onzo
-                                                                    where onzo.odmor_korisnik_email = new.korisnik_email and
-                                                                    (onzo.status = 'odobren' or onzo.status = 'na cekanju') and 
-                                                                    onzo.odmor_dan_odmora = DATE_ADD(new.dan_odmora, interval -1 day)
-																	);
+	-- set ima_odgovoren_pre_novog_dana = (
+	-- 																select count(*) from odgovorNaZahtevOdmora onzo
+--                                                                     where onzo.odmor_korisnik_email = new.korisnik_email and
+--                                                                     (onzo.status = 'odobren' or onzo.status = 'na cekanju') and 
+--                                                                     onzo.odmor_dan_odmora = DATE_ADD(new.dan_odmora, interval -1 day)
+-- 																	);
                                                         
                                                         
-      set ima_zahtev_posle_novog_dana = (
-														  select count(*) from odmor zo
-                                                          where zo.korisnik_email = new.korisnik_email and
-                                                          zo.deleted = 0 and
-                                                          zo.dan_odmora = DATE_ADD(new.dan_odmora, interval 1 day)
-														);
-                                                        
-	set ima_odgovoren_posle_novog_dana = (
-																		select count(*) from odgovorNaZahtevOdmora onzo
-																		where onzo.odmor_korisnik_email = new.korisnik_email and
-																		(onzo.status = 'odobren' or onzo.status = 'na cekanju') and 
-																		onzo.odmor_dan_odmora = DATE_ADD(new.dan_odmora, interval 1 day)
-																		);
+    --   set ima_zahtev_posle_novog_dana = (
+-- 														  select count(*) from odmor zo
+--                                                           where zo.korisnik_email = new.korisnik_email and
+--                                                           zo.deleted = 0 and
+--                                                           zo.dan_odmora = DATE_ADD(new.dan_odmora, interval 1 day)
+-- 														);
+--                                                         
+-- 	set ima_odgovoren_posle_novog_dana = (
+-- 																		select count(*) from odgovorNaZahtevOdmora onzo
+-- 																		where onzo.odmor_korisnik_email = new.korisnik_email and
+-- 																		(onzo.status = 'odobren' or onzo.status = 'na cekanju') and 
+-- 																		onzo.odmor_dan_odmora = DATE_ADD(new.dan_odmora, interval 1 day)
+-- 																		);
 
     set novi_broj_slobodnih_dana = (select preostalo_slobodnih_dana from aktivnaStatistikaUsera asu where asu.korisnik_email = new.korisnik_email) - 1;
     set novi_broj_dana_na_cekanju = (select dani_na_cekanju from aktivnaStatistikaUsera asu where asu.korisnik_email = new.korisnik_email) + 1;
@@ -114,7 +114,7 @@ begin
 		then signal sqlstate '45000' set message_text='Ne moze da odgovori na obrisani zahtev za odmor';
     end if;
     
-    -- NE SME DA ODGOVORI NA DATUM KOJI JE ALTERNATIVNI osim ako nije primarni odbijen !!!!!!!!!!! JOJ DUSANE
+    -- NE SME DA ODGOVORI NA DATUM KOJI JE ALTERNATIVNI osim ako nije primarni odbijen !!!!!!!!!!!
    set da_li_je_alternativni = (select count(*) from primarniSekundarniOdmor pso
 												where pso.odmor_korisnik_email = new.odmor_korisnik_email and pso.odmor_dan_odmora1 = new.odmor_dan_odmora
                                                 );
