@@ -169,7 +169,7 @@ void dodajPrimarniSekundarniOdmor(Sql *sql, char *emailKorisnika, char *primarni
 }
 
 void glavniMeni(Sql *sql) {
-	printf("\n%s\n%s\n%s\n%s\n%s\n%s\n", "Unesite:", "1) Unos novih korisnika", "2) Unos novog admina", "3) Zahtev za odmor", "4) Odgovor na zahtev odmora", "5) Dodaj/oduzmi nekome dan");
+	printf("\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n", "Unesite:", "1) Unos novih korisnika", "2) Unos novog admina", "3) Zahtev za odmor", "4) Odgovor na zahtev odmora", "5) Dodaj/oduzmi nekome dan", "6) Ispis pracenja dana korisnika", "7) Ispis aktivne statistike korisnika");
 	int opcija;
 	scanf("%d", &opcija);
 	switch(opcija) {
@@ -188,9 +188,37 @@ void glavniMeni(Sql *sql) {
 		case 5:
 			dodajDane(sql);
 			break;
+		case 6:
+			unosMejlaZaIspisPracenjeDana(sql);
+			break;
+		case 7:
+			unosMejlaZaIspisAktivneStatistike(sql);
+			break;
 		default:
 			printf("Dovidjenja!\n");
 	}
+}
+
+void unosMejlaZaIspisAktivneStatistike(Sql *sql) {
+	printf("Od dole navedenih korisnika, izaberite email korisnika za koga zelite da ispiste kretanje dana.\n");
+	ispisiSveKorisnike(sql);
+	printf("Izabrani korisnik: ");
+	char korisnikEmail[50];
+	scanf("%s", korisnikEmail);
+
+	ispisiLiveStatistic(sql, korisnikEmail);
+	glavniMeni(sql);
+}
+
+void unosMejlaZaIspisPracenjeDana (Sql *sql) {
+	printf("Od dole navedenih korisnika, izaberite email korisnika za koga zelite da ispiste kretanje dana.\n");
+	ispisiSveKorisnike(sql);
+	printf("Izabrani korisnik: ");
+	char korisnikEmail[50];
+	scanf("%s", korisnikEmail);
+
+	ispisiPracenjeDana(sql, korisnikEmail);
+	glavniMeni(sql);
 }
 
 void dodajOdgovorNaZahtevOdmora(Sql *sql){

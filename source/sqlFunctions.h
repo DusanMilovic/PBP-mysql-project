@@ -19,3 +19,5 @@ void ispisiLiveStatistic(Sql *sql, char *korisnikEmail);
 void ispisiPracenjeDana(Sql *sql, char *korisnikEmail);
 void dodajDane(Sql *sql);
 void azurirajLiveStatistic(Sql *sql, char *emailKorisnika, int brojDana);
+void unosMejlaZaIspisPracenjeDana (Sql *sql);
+void unosMejlaZaIspisAktivneStatistike(Sql *sql);
