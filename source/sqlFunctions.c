@@ -443,17 +443,25 @@ void ispisiSveZahteveZaOdmor(Sql *sql, char *adminEmail, char *korisnikEmail) {
   	printf ("\n\n");
 
   	while ((sql->row = mysql_fetch_row(sql->result))) {
-    	for (int i=0;i<n;i++)
+    	for (int i=0;i<n;i++) {
       		printf ("%s\t\t", sql->row[i]);
+    	}
     	printf ("\n");
   	}
   	printf ("\n\n");
 
-  	printf("Izaberite dan odmora (u istom formatu kao sto je ispisan) za koji zelite da odgovorite: ");
-  	char datumOdmora[20];
-  	scanf("%s", datumOdmora);
+  	printf("Da li zelite da odgovorite na neki zahtev (da/ne)? ");
+  	char odgovor[3];
+  	scanf("%s", odgovor);
+  	if (strcmp(odgovor, "ne") == 0) {
+  		glavniMeni(sql);
+  	} else {
+  		printf("Izaberite dan odmora (u istom formatu kao sto je ispisan) za koji zelite da odgovorite: ");
+  		char datumOdmora[20];
+  		scanf("%s", datumOdmora);
 
-  	odgovoriNaOdmor(sql, adminEmail, korisnikEmail, datumOdmora);
+  		odgovoriNaOdmor(sql, adminEmail, korisnikEmail, datumOdmora);	
+  	}
 }
 
 void ispisiLiveStatistic(Sql *sql, char *korisnikEmail) {
